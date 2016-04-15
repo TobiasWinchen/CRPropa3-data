@@ -61,3 +61,19 @@ for field in fields:
     header = ("Photo-pion interaction rate for different redshifts %s\n"
               "z\tlog10(gamma)\t1/lambda_proton [1/Mpc]\t1/lambda_neutron [1/Mpc]"%field.info)
     savetxt(fname, data, fmt=fmt, header=header)
+
+
+#integrated photon densities
+for field in fields:
+    print("photon distribution: " + field.name)
+    energies = 10**linspace(log10(field.getEmin()), log10(field.getEmax()), 1000)
+    photonDensity = field.getDensity(energies) 
+    fname = 'data/PhotonDistribution_%s.txt' % field.name
+    fmt   = '%.8e\t%.8e'
+    data = zeros([energies.size, 2])
+    data[:,0] = energies
+    data[:,1] = photonDensity
+    header = ("Photon density %s\n"
+              "E [J]\t d [a.u.]" % field.info)
+    savetxt(fname, data, fmt=fmt, header=header)
+
